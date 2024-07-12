@@ -24,27 +24,22 @@ public class PetChargerService {
 	}
 
 	public void animalInsert(Animal animal) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public ArrayList<Animal> getAnimalList(String petName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public ArrayList<MedicalRecord> getMedicalRecordList(int animalPK) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void animalAndMedicalRecordDelete(int animalPK) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void medicalRecordInsert(MedicalRecord medicalRecord) {
-		// TODO Auto-generated method stub
 		
 	}
 

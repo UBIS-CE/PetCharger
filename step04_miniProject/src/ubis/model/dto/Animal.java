@@ -12,7 +12,7 @@ import lombok.Setter;
 
 public class Animal {
 	// 동물 pk
-	private String petId;
+	private Integer petId;
 	
 	// 반려동물 이름
 	private String petName;
