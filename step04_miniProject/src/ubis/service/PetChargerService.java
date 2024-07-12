@@ -44,10 +44,31 @@ public class PetChargerService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void animalAndMedicalRecordDelete(int animalPK) {
-		// TODO Auto-generated method stub
+	
+	/**
+	 * animal pk로 animal 객체를 조회
+	 */
+	public Animal getAnimalInfo(Integer petId) {
 		
+		for(Animal info : animalList ) {
+			if(info != null && info.getAnimalpetId().equals(petId)) {
+				return info;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * animalPK를 animal list와 mediclist에서 삭제
+	 * @param animalPK
+	 */
+	public void animalAndMedicalRecordDelete(int animalPK) {
+		Animal animal = animalList.get(animalPK);
+		if(animal != null) {
+			animalList.remove(animalPK);
+			medicalRecordList.remove(animalPK);
+		}
 	}
 
 	public void medicalRecordInsert(MedicalRecord medicalRecord) {
