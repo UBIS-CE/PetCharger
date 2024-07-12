@@ -61,10 +61,6 @@ public class PetChargerService {
 				}
 			}
 			
-			for (Animal animal : searchAnimals) {
-				System.out.println("animal:" + animal.getPetName() + " " + animal.getPetId());
-			}
-			
 			// 펫이름으로 조회되 리스트가 2이상이면 사용자에게 id를 받고 해당 데이터 보여주기
 			if (searchAnimals.size() > 1) {
 				searchAnimals.toString();
@@ -72,11 +68,7 @@ public class PetChargerService {
 				System.out.println("당신의 애완동물 pk를 입력해주세요.");
 				Integer animalPK = sc.nextInt();
 				
-				for (Animal animal : searchAnimals) {
-					if(animal.getPetId() != animalPK) {
-						searchAnimals.remove(animal);
-					}
-				}
+				searchAnimals.removeIf(animal -> animal.getPetId() != animalPK);
 			} 
 			
 		} else {
@@ -96,8 +88,6 @@ public class PetChargerService {
 		for (MedicalRecord medicalRecord : medicalRecordList) {
 			if (medicalRecord.getAnimalPK() == animalPK) {
 				searchMedicaRecord.add(medicalRecord);
-			} else {
-				throw new Exception("없는 애완동물 PK입니다.");
 			}
 		}
 		
@@ -124,11 +114,10 @@ public class PetChargerService {
 		}
 	}
 
-	public void calculateTotalFee(Animal animal, String diseaseName) {
-		Disease disease = getDisease(diseaseName);
-		int fee = disease.getFee();
-		int total = animal.getChargeAmount() - disease.getFee();
+	public Animal calculateTotalFee(Animal animal, int fee) {
+		int total = animal.getChargeAmount() -fee;
 		animal.setChargeAmount(total);
+		return animal;
 	}
 	
 	private Animal getAnimal(Integer petId) {

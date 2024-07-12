@@ -14,7 +14,7 @@ import ubis.model.dto.MedicalRecord;
 
 public class StartView {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String filepath = "C:\\teamProject\\PetCharger\\step04_miniProject\\docs\\";
 
         // 초기 Animal들의 정보가 저장돼있는 ArrayList
@@ -76,7 +76,7 @@ public class StartView {
         System.out.println("    환자 진료기록을 검색합니다: 애완동물 이름을 입력해주세요.");
         System.out.println("===============================================");
         String name = sc.next();
-        controller.getAnimalList(name);
+        ArrayList<Animal> AnimalArrayList = controller.getAnimalList(name);
 
         System.out.println("===============================================");
         System.out.println("          해피의 진료기록 조회 결과입니다.          ");
@@ -90,8 +90,12 @@ public class StartView {
         System.out.println("병명을 입력해주세요:");
         String disease = sc.next();
 
-        Animal animal = controller.getAnimalInfo(22);
-        controller.getDisease(animal, disease);
+        Animal animal = controller.getAnimalInfo(AnimalArrayList.get(0).getPetId());
+        System.out.println("수정 전");
+        animal.toString();
+        Animal aaa = controller.getDisease(animal, disease);
+        System.out.println("수정 후");
+        System.out.println(aaa.getChargeAmount());
 
         System.out.println("===============================================");
         System.out.println("     환자 진료기록 및 동물 정보를 삭제하고 있습니다...     ");

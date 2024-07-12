@@ -1,4 +1,6 @@
 package ubis.controller;
+import java.util.ArrayList;
+
 import ubis.model.dto.Animal;
 import ubis.model.dto.Disease;
 import ubis.model.dto.MedicalRecord;
@@ -49,14 +51,12 @@ public class PetChargerController {
 	 * 이름 검색 후 리스트 반환-> 선택하여 확인
 	 * SELECT
 	 * @return 환자 객체
+	 * @throws Exception 
 	 */
-	public void getAnimalList(String petName) {
-		try {
-			EndView.animalViewList(service.getAnimalList(petName));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public ArrayList<Animal> getAnimalList(String petName) throws Exception {
+
+		EndView.animalViewList(service.getAnimalList(petName));
+		return service.getAnimalList(petName);
 	}
 	
 	/**
@@ -109,9 +109,10 @@ public class PetChargerController {
 		service.animalAndMedicalRecordDelete(animalPK);
 	}
 	
-	public void getDisease(Animal animal, String diseaseName) {
+	public Animal getDisease(Animal animal, String diseaseName) {
 		Disease disease = service.getDisease(diseaseName);
-		service.calculateTotalFee(animal, diseaseName);
+		Animal animals = service.calculateTotalFee(animal, disease.getFee());
+		return animals;
 	}
 	
 	public Animal getAnimalInfo(int petID) {
