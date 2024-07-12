@@ -1,5 +1,6 @@
 package ubis.controller;
 import ubis.model.dto.Animal;
+import ubis.model.dto.Disease;
 import ubis.model.dto.MedicalRecord;
 import ubis.service.PetChargerService;
 import ubis.view.EndView;
@@ -34,6 +35,10 @@ public class PetChargerController {
 		}
 	}
 	
+	
+	public void diseaseInsert(Disease disease) {
+		service.diseaseInsert(disease);
+	}
 	/**
 	 * 2. 환자 정보 검색
 	 * 이름 검색 후 리스트 반환-> 선택하여 확인
@@ -97,5 +102,14 @@ public class PetChargerController {
 	 */
 	public void animalAndMedicalRecordDelete(int animalPK) {
 		service.animalAndMedicalRecordDelete(animalPK);
+	}
+	
+	public void getDisease(Animal animal, String diseaseName) {
+		Disease disease = service.getDisease(diseaseName);
+		service.calculateTotalFee(animal, diseaseName);
+	}
+	
+	public Animal getAnimalInfo(int petID) {
+		return service.getAnimalInfo(petID);
 	}
 }

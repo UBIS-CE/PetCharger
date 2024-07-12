@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter  
 @Setter
-
 public class Animal {
 	// 동물 pk
 	private Integer petId;
@@ -27,7 +26,7 @@ public class Animal {
 	private int chargeAmount;
 	
 	// 반려동물 성별
-	private char gender;
+	private String gender;
 	
 	@Override
 	public String toString() {

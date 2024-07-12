@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import ubis.controller.PetChargerController;
 import ubis.model.dto.Animal;
@@ -13,43 +14,92 @@ import ubis.model.dto.MedicalRecord;
 
 public class StartView {
 
-	public static void main(String[] args) {
-		String filepath = "C:/fisa_miniproject/PetCharger/step04_miniProject/docs/";
-		/**초기 Animal들의 정보가 저장돼있는 ArrayList*/
-		ArrayList<Animal> animalList = readAnimalDataFromFile(filepath+"animal.txt");
-		ArrayList<Disease> diseaseList = makeDiseaseList();
-		ArrayList<MedicalRecord> medicalRecordList = readMedicalRecordFromFile(filepath+"medicalRecord.txt", diseaseList);
-		
-		PetChargerController controller = PetChargerController.getInstance();
-		
-		System.out.println("01. 환자정보 생성");
-		for(Animal animal : animalList) {
-			controller.animalInsert(animal);
-		}
-		
-		System.out.println("02. 환자정보 검색");
-		controller.getAnimalList(petname);
-		
-		System.out.println("03. 환자 진료기록 생성");
-		for(MedicalRecord medicalRecord : medicalRecordList) {
-			controller.medicalRecordInsert(medicalRecord);
-		}
-		
-		System.out.println("04. 환자 진료기록 검색 ");
-		controller.getMedicalRecordList(0);
-		
-		System.out.println("05. 병명 및 가격 생성");
-		for(Disease disease : diseaseList) {
-			controller.diseaseInsert(disease);
-		}
-		
-		
-		System.out.println("0x. 환자 진료기록 및 동물 정보 삭제");
-		controller.animalAndMedicalRecordDelete(0);
-		
-		
+    public static void main(String[] args) {
+        String filepath = "C:\\류채현\\1주차_PetCharger2\\step04_miniProject\\docs\\";
 
-	}
+        // 초기 Animal들의 정보가 저장돼있는 ArrayList
+        ArrayList<Animal> animalList = readAnimalDataFromFile(filepath + "animal.txt");
+        ArrayList<Disease> diseaseList = makeDiseaseList();
+        ArrayList<MedicalRecord> medicalRecordList = readMedicalRecordFromFile(filepath + "medicalRecord.txt", diseaseList);
+
+        PetChargerController controller = PetChargerController.getInstance();
+
+        System.out.println("===============================================");
+        System.out.println("     UBIS 동물병원에 오신 것을 환영합니다!     ");
+        System.out.println("===============================================");
+        System.out.println("처음 방문하셨나요?");
+        System.out.println("1. 처음 방문");
+        System.out.println("2. 이전에 방문한 적이 있음");
+
+        Scanner sc = new Scanner(System.in);
+        int num = sc.nextInt();
+
+        // 처음 방문 
+        if (num == 1) {
+            for (Animal animal : animalList) {
+                controller.animalInsert(animal);
+            }
+            Animal an = new Animal(100, "웅이", "박웅빈", "HEDGEHOG", 200000,"M");
+            controller.animalInsert(an);
+            System.out.println(an); // 출력
+        }
+        // 이전에 방문한 적이 있음
+        else if (num == 2) {
+            System.out.println("반갑습니다! 보호자 이름을 입력해주세요:");
+            String ownerName = sc.next();
+            controller.getAnimalList(ownerName);
+        } else {
+            System.out.println("잘못된 입력입니다. 프로그램을 재실행 해주세요.");
+            return;
+        }
+
+        System.out.println("===============================================");
+        System.out.println("                진료 중입니다...                ");
+        System.out.println("===============================================");
+        System.out.println("질병명을 입력해주세요:");
+        String diseaseName = sc.next();
+
+        System.out.println("===============================================");
+        System.out.println("        환자 진료기록을 생성하고 있습니다...        ");
+        System.out.println("===============================================");
+        for (MedicalRecord medicalRecord : medicalRecordList) {
+            controller.medicalRecordInsert(medicalRecord);
+        }
+
+
+        System.out.println("===============================================");
+        System.out.println("    환자 진료기록을 검색합니다: 보호자 이름을 입력해주세요.");
+        System.out.println("===============================================");
+        String name = sc.next();
+        controller.getAnimalList(name);
+
+        System.out.println("===============================================");
+        System.out.println("          해피의 진료기록 조회 결과입니다.          ");
+        System.out.println("===============================================");
+        controller.getMedicalRecordList(22);
+
+        System.out.println("===============================================");
+        System.out.println("        병명 및 가격 정보를 생성하고 있습니다...        ");
+        System.out.println("===============================================");
+        for (Disease disease : diseaseList) {
+            controller.diseaseInsert(disease);
+        }
+        System.out.println("병명을 입력해주세요:");
+        String disease = sc.next();
+
+        Animal animal = controller.getAnimalInfo(22);
+        controller.getDisease(animal, disease);
+
+        System.out.println("===============================================");
+        System.out.println("     환자 진료기록 및 동물 정보를 삭제하고 있습니다...     ");
+        System.out.println("===============================================");
+        controller.animalAndMedicalRecordDelete(animal.getPetId());
+
+        System.out.println("===============================================");
+        System.out.println("            작업이 완료되었습니다. 감사합니다!             ");
+        System.out.println("===============================================");
+    }
+    
 	/** Disease 정보 생성*/
 	public static ArrayList<Disease> makeDiseaseList(){
 		Disease d1 = new Disease(1,"Leg", 20000);
@@ -86,7 +136,7 @@ public class StartView {
 	                String guardianName = data[2];
 	                String animalType = data[3];
 	                int charge = Integer.parseInt(data[4]);
-	                char sex = data[5].charAt(0);
+	                String sex = data[5];
 	                
 	                /** 동물 정보 - pk, 동물이름, 보호자명, 동물종류, 충전금액, 성별*/
 	                Animal animal = new Animal(pk, name, guardianName, animalType, charge, sex);

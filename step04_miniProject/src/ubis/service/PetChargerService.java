@@ -148,7 +148,7 @@ public class PetChargerService {
 		return null;
 	}
 	
-	private Disease getDisease(String diseaseName) {
+	public Disease getDisease(String diseaseName) {
 		for (Disease d : diseaseList) {
 			if (d != null && d.getDiseaseName().equals(diseaseName)) {
 				return d; //메소드 자체의 종료
