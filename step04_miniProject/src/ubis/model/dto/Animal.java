@@ -33,15 +33,15 @@ public class Animal {
 		StringBuilder builder = new StringBuilder();
 		builder.append("동물 id : ");
 		builder.append(petId);
-		builder.append("반려동물 이름 : ");
+		builder.append(" 반려동물 이름 : ");
 		builder.append(petName);
-		builder.append("보호자 성함 : ");
+		builder.append(" 보호자 성함 : ");
 		builder.append(guardianName);
-		builder.append("동물 종류 : ");
+		builder.append(" 동물 종류 : ");
 		builder.append(animalType);
-		builder.append("충전 금액 : ");
+		builder.append(" 충전 금액 : ");
 		builder.append(chargeAmount);
-		builder.append("반려동물 성별 : ");
+		builder.append(" 반려동물 성별 : ");
 		builder.append(gender);
 		return builder.toString();
 	}
