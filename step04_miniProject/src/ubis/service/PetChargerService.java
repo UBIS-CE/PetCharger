@@ -1,8 +1,10 @@
 package ubis.service;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import ubis.model.dto.Animal;
+import ubis.model.dto.Disease;
 import ubis.model.dto.MedicalRecord;
 
 
@@ -17,6 +19,9 @@ public class PetChargerService {
 	/** 진료기록을 저장 */
 	private ArrayList<MedicalRecord> medicalRecordList = new ArrayList<MedicalRecord>();
 	
+	/** 질병정보를 저장 */
+	private ArrayList<Disease> diseaseList = new ArrayList<Disease>();
+
 	private PetChargerService() {}
 	
 	public static PetChargerService getInstance() {
@@ -31,21 +36,77 @@ public class PetChargerService {
 		animalList.add(a);
 	}
 		
-	public ArrayList<Animal> getAnimalList(String petName) {
-		return null;
-	}
-	public ArrayList<MedicalRecord> getMedicalRecordList(int animalPK) {
-		return null;
+	public void medicalRecordInsert(MedicalRecord medicalRecord) throws Exception {
+		MedicalRecord m = getMedicalRecord(medicalRecord.getPk());
+		if (m != null) {
+			throw new Exception("해당 진료기록 Id는 이미 존재합니다. 재 확인하세요");
+		}
+		medicalRecordList.add(m);
 	}
 	
-	/**
-<<<<<<< HEAD
-	 * animal pk로 animal 객체를 조회
-	 */
+	public void diseaseInsert(Disease disease) throws Exception {
+		diseaseList.add(disease);
+	}
+	
+	
+	public ArrayList<Animal> getAnimalList(String petName) throws Exception {
+		// 검색된 데이터 넣을 리스트 생성
+		ArrayList<Animal> searchAnimals = new ArrayList<Animal>();
+		
+		// petName 입력값 검증
+		if (petName != null && petName.length() != 0) {
+			// 펫이름으로 해당되는 리스트 검색
+			for (Animal animal : animalList) {
+				if (animal.getPetName().equals(petName)) {
+					searchAnimals.add(animal);
+				} else {
+					throw new Exception("없는 애완동물 이름입니다.");
+				}
+			}
+			
+			// 펫이름으로 조회되 리스트가 2이상이면 사용자에게 id를 받고 해당 데이터 보여주기
+			if (searchAnimals.size() > 1) {
+				searchAnimals.toString();
+				Scanner sc = new Scanner(System.in);
+				System.out.println("당신의 애완동물 pk를 입력해주세요.");
+				Integer animalPK = sc.nextInt();
+				
+				for (Animal animal : searchAnimals) {
+					if(animal.getPetId() != animalPK) {
+						searchAnimals.remove(animal);
+					}
+				}
+			} 
+			
+		} else {
+			throw new Exception("애완동물 이름을 입력해주세요.");
+		}
+
+		return searchAnimals;
+	}
+
+	public ArrayList<MedicalRecord> getMedicalRecordList(int animalPK) throws Exception {		
+		// animalPK 입력값 검증
+		if(animalPK == 0) throw new Exception("애완동물 PK을 입력해주세요.");
+		
+		// 검색된 데이터 넣을 리스트 생성
+		ArrayList<MedicalRecord> searchMedicaRecord = new ArrayList<MedicalRecord>();
+		
+		for (MedicalRecord medicalRecord : medicalRecordList) {
+			if (medicalRecord.getAnimalPK() == animalPK) {
+				searchMedicaRecord.add(medicalRecord);
+			} else {
+				throw new Exception("없는 애완동물 PK입니다.");
+			}
+		}
+		
+		return searchMedicaRecord;
+	}
+
 	public Animal getAnimalInfo(Integer petId) {
 		
 		for(Animal info : animalList ) {
-			if(info != null && info.getAnimalpetId().equals(petId)) {
+			if(info != null && info.getPetId().equals(petId)) {
 				return info;
 			}
 		}
@@ -53,12 +114,7 @@ public class PetChargerService {
 		return null;
 	}
 	
-	/**
-=======
->>>>>>> e581fb76bb2bf24d5a163eb62035d41deaadb032
-	 * animalPK를 animal list와 mediclist에서 삭제
-	 * @param animalPK
-	 */
+
 	public void animalAndMedicalRecordDelete(int animalPK) {
 		Animal animal = animalList.get(animalPK);
 		if(animal != null) {
@@ -66,13 +122,12 @@ public class PetChargerService {
 			medicalRecordList.remove(animalPK);
 		}
 	}
-	
-	public void medicalRecordInsert(MedicalRecord medicalRecord) throws Exception {
-		MedicalRecord m = getMedicalRecord(medicalRecord.getPk());
-		if (m != null) {
-			throw new Exception("해당 진료기록 Id는 이미 존재합니다. 재 확인하세요");
-		}
-		medicalRecordList.add(m);
+
+	public void calculateTotalFee(Animal animal, String diseaseName) {
+		Disease disease = getDisease(diseaseName);
+		int fee = disease.getFee();
+		int total = animal.getChargeAmount() - disease.getFee();
+		animal.setChargeAmount(total);
 	}
 	
 	private Animal getAnimal(Integer petId) {
@@ -88,6 +143,15 @@ public class PetChargerService {
 		for (MedicalRecord medical : medicalRecordList) {
 			if (medical != null && medical.getPk()==pk) {
 				return medical; //메소드 자체의 종료
+			}
+		}
+		return null;
+	}
+	
+	private Disease getDisease(String diseaseName) {
+		for (Disease d : diseaseList) {
+			if (d != null && d.getDiseaseName().equals(diseaseName)) {
+				return d; //메소드 자체의 종료
 			}
 		}
 		return null;

@@ -41,7 +41,12 @@ public class PetChargerController {
 	 * @return 환자 객체
 	 */
 	public void getAnimalList(String petName) {
-		EndView.animalViewList(service.getAnimalList(petName));
+		try {
+			EndView.animalViewList(service.getAnimalList(petName));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -74,7 +79,12 @@ public class PetChargerController {
 	 * @return 진료기록 객체
 	 */
 	public void getMedicalRecordList(int animalPK) {
-		EndView.medicalRecordViewList(service.getMedicalRecordList(animalPK));
+		try {
+			EndView.medicalRecordViewList(service.getMedicalRecordList(animalPK));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
