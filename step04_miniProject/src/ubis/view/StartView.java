@@ -15,7 +15,7 @@ import ubis.model.dto.MedicalRecord;
 public class StartView {
 
     public static void main(String[] args) {
-        String filepath = "C:\\류채현\\1주차_PetCharger2\\step04_miniProject\\docs\\";
+        String filepath = "C:\\teamProject\\PetCharger\\step04_miniProject\\docs\\";
 
         // 초기 Animal들의 정보가 저장돼있는 ArrayList
         ArrayList<Animal> animalList = readAnimalDataFromFile(filepath + "animal.txt");
@@ -23,7 +23,16 @@ public class StartView {
         ArrayList<MedicalRecord> medicalRecordList = readMedicalRecordFromFile(filepath + "medicalRecord.txt", diseaseList);
 
         PetChargerController controller = PetChargerController.getInstance();
-
+        for (Animal animal : animalList) {
+            controller.animalInsert(animal);
+            System.out.println("an:" + animal);
+        }
+        for (Disease disease : diseaseList) {
+            controller.diseaseInsert(disease);
+        }
+        for (MedicalRecord medicalRecord : medicalRecordList) {
+            controller.medicalRecordInsert(medicalRecord);
+        }
         System.out.println("===============================================");
         System.out.println("     UBIS 동물병원에 오신 것을 환영합니다!     ");
         System.out.println("===============================================");
@@ -36,9 +45,7 @@ public class StartView {
 
         // 처음 방문 
         if (num == 1) {
-            for (Animal animal : animalList) {
-                controller.animalInsert(animal);
-            }
+          
             Animal an = new Animal(100, "웅이", "박웅빈", "HEDGEHOG", 200000,"M");
             controller.animalInsert(an);
             System.out.println(an); // 출력
@@ -62,13 +69,11 @@ public class StartView {
         System.out.println("===============================================");
         System.out.println("        환자 진료기록을 생성하고 있습니다...        ");
         System.out.println("===============================================");
-        for (MedicalRecord medicalRecord : medicalRecordList) {
-            controller.medicalRecordInsert(medicalRecord);
-        }
+        
 
 
         System.out.println("===============================================");
-        System.out.println("    환자 진료기록을 검색합니다: 보호자 이름을 입력해주세요.");
+        System.out.println("    환자 진료기록을 검색합니다: 애완동물 이름을 입력해주세요.");
         System.out.println("===============================================");
         String name = sc.next();
         controller.getAnimalList(name);
@@ -81,9 +86,7 @@ public class StartView {
         System.out.println("===============================================");
         System.out.println("        병명 및 가격 정보를 생성하고 있습니다...        ");
         System.out.println("===============================================");
-        for (Disease disease : diseaseList) {
-            controller.diseaseInsert(disease);
-        }
+        
         System.out.println("병명을 입력해주세요:");
         String disease = sc.next();
 
@@ -102,7 +105,7 @@ public class StartView {
     
 	/** Disease 정보 생성*/
 	public static ArrayList<Disease> makeDiseaseList(){
-		Disease d1 = new Disease(1,"Leg", 20000);
+		Disease d1 = new Disease(1,"leg", 20000);
 		Disease d2 = new Disease(2,"Eye", 65000);
 		Disease d3 = new Disease(3,"Heart", 70000);
 		Disease d4 = new Disease(4,"Head", 60000);

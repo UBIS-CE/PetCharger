@@ -33,7 +33,7 @@ public class PetChargerService {
 		if (a != null) {
 			throw new Exception("해당 animal Id는이미 존재합니다. 재 확인하세요");
 		}
-		animalList.add(a);
+		animalList.add(animal);
 	}
 		
 	public void medicalRecordInsert(MedicalRecord medicalRecord) throws Exception {
@@ -41,7 +41,7 @@ public class PetChargerService {
 		if (m != null) {
 			throw new Exception("해당 진료기록 Id는 이미 존재합니다. 재 확인하세요");
 		}
-		medicalRecordList.add(m);
+		medicalRecordList.add(medicalRecord);
 	}
 	
 	public void diseaseInsert(Disease disease) throws Exception {
@@ -52,16 +52,17 @@ public class PetChargerService {
 	public ArrayList<Animal> getAnimalList(String petName) throws Exception {
 		// 검색된 데이터 넣을 리스트 생성
 		ArrayList<Animal> searchAnimals = new ArrayList<Animal>();
-		
 		// petName 입력값 검증
 		if (petName != null && petName.length() != 0) {
 			// 펫이름으로 해당되는 리스트 검색
 			for (Animal animal : animalList) {
 				if (animal.getPetName().equals(petName)) {
 					searchAnimals.add(animal);
-				} else {
-					throw new Exception("없는 애완동물 이름입니다.");
 				}
+			}
+			
+			for (Animal animal : searchAnimals) {
+				System.out.println("animal:" + animal.getPetName() + " " + animal.getPetId());
 			}
 			
 			// 펫이름으로 조회되 리스트가 2이상이면 사용자에게 id를 받고 해당 데이터 보여주기

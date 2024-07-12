@@ -37,7 +37,12 @@ public class PetChargerController {
 	
 	
 	public void diseaseInsert(Disease disease) {
-		service.diseaseInsert(disease);
+		try {
+			service.diseaseInsert(disease);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * 2. 환자 정보 검색
