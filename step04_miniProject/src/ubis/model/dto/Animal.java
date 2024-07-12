@@ -11,5 +11,5 @@ import lombok.Setter;
 @Setter
 public class Animal {
 	private String pet_id;
-	
+	private String pet_name;
 }
