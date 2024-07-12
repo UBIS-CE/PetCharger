@@ -12,19 +12,19 @@ import lombok.Setter;
 
 public class Animal {
 	// 동물 pk
-	private String pet_id;
+	private String petId;
 	
 	// 반려동물 이름
-	private String pet_name;
+	private String petName;
 	
 	// 보호자 성함
-	private String guardian_name;
+	private String guardianName;
 	
 	// 동물 종류
-	private String animal_type;
+	private String animalType;
 	
 	// 충전 금액
-	private int charge_amount;
+	private int chargeAmount;
 	
 	// 반려동물 성별
 	private char gender;
@@ -33,15 +33,15 @@ public class Animal {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("동물 id : ");
-		builder.append(pet_id);
+		builder.append(petId);
 		builder.append("반려동물 이름 : ");
-		builder.append(pet_name);
+		builder.append(petName);
 		builder.append("보호자 성함 : ");
-		builder.append(guardian_name);
+		builder.append(guardianName);
 		builder.append("동물 종류 : ");
-		builder.append(animal_type);
+		builder.append(animalType);
 		builder.append("충전 금액 : ");
-		builder.append(charge_amount);
+		builder.append(chargeAmount);
 		builder.append("반려동물 성별 : ");
 		builder.append(gender);
 		return builder.toString();

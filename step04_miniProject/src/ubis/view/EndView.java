@@ -5,6 +5,7 @@ package ubis.view;
 import java.util.ArrayList;
 
 import ubis.model.dto.Animal;
+import ubis.model.dto.MedicalRecord;
 
 public class EndView {
 	

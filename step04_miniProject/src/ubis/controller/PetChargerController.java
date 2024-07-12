@@ -1,6 +1,8 @@
 package ubis.controller;
 
 import ubis.model.dto.Animal;
+import ubis.model.dto.MedicalRecord;
+import ubis.service.PetChargerService;
 import ubis.view.EndView;
 import ubis.view.FailView;
 
@@ -57,7 +59,7 @@ public class PetChargerController {
 		int animalPK = medicalRecord.getAnimalPK();
 		String doctorName = medicalRecord.getDoctorName();
 		
-		if(animalPK != null && animalPK.length() !=0 && doctorName !=null && doctorName.length()!=0){
+		if(animalPK !=0 && doctorName !=null && doctorName.length()!=0){
 			try {
 				service.medicalRecordInsert(medicalRecord);
 				EndView.successMessage("진료 기록 등록이 완료되었습니다.");
@@ -92,4 +94,5 @@ public class PetChargerController {
 	public void animalAndMedicalRecordDelete(int animalPK) {
 		service.animalAndMedicalRecordDelete(animalPK);
 	}
+}
 
