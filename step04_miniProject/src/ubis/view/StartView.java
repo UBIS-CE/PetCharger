@@ -23,9 +23,9 @@ public class StartView {
         ArrayList<MedicalRecord> medicalRecordList = readMedicalRecordFromFile(filepath + "medicalRecord.txt", diseaseList);
 
         PetChargerController controller = PetChargerController.getInstance();
+
         for (Animal animal : animalList) {
             controller.animalInsert(animal);
-            System.out.println("an:" + animal);
         }
         for (Disease disease : diseaseList) {
             controller.diseaseInsert(disease);
@@ -33,6 +33,7 @@ public class StartView {
         for (MedicalRecord medicalRecord : medicalRecordList) {
             controller.medicalRecordInsert(medicalRecord);
         }
+
         System.out.println("===============================================");
         System.out.println("     UBIS 동물병원에 오신 것을 환영합니다!     ");
         System.out.println("===============================================");
@@ -43,12 +44,11 @@ public class StartView {
         Scanner sc = new Scanner(System.in);
         int num = sc.nextInt();
 
-        // 처음 방문 
+        // 처음 방문
         if (num == 1) {
-          
-            Animal an = new Animal(100, "웅이", "박웅빈", "HEDGEHOG", 200000,"M");
+            Animal an = new Animal(100, "웅이", "박웅빈", "HEDGEHOG", 200000, "M");
             controller.animalInsert(an);
-            System.out.println(an); // 출력
+            System.out.println("새로운 동물이 등록되었습니다: " + an);
         }
         // 이전에 방문한 적이 있음
         else if (num == 2) {
@@ -69,33 +69,25 @@ public class StartView {
         System.out.println("===============================================");
         System.out.println("        환자 진료기록을 생성하고 있습니다...        ");
         System.out.println("===============================================");
-        
-
-
-        System.out.println("===============================================");
-        System.out.println("    환자 진료기록을 검색합니다: 애완동물 이름을 입력해주세요.");
-        System.out.println("===============================================");
+        System.out.println("애완동물 이름을 입력해주세요:");
         String name = sc.next();
         ArrayList<Animal> AnimalArrayList = controller.getAnimalList(name);
 
         System.out.println("===============================================");
-        System.out.println("          해피의 진료기록 조회 결과입니다.          ");
+        System.out.println("          진료기록 조회 결과입니다.          ");
         System.out.println("===============================================");
-        controller.getMedicalRecordList(22);
+        controller.getMedicalRecordList(AnimalArrayList.get(0).getPetId());
 
         System.out.println("===============================================");
         System.out.println("        병명 및 가격 정보를 생성하고 있습니다...        ");
         System.out.println("===============================================");
-        
         System.out.println("병명을 입력해주세요:");
         String disease = sc.next();
 
         Animal animal = controller.getAnimalInfo(AnimalArrayList.get(0).getPetId());
-        System.out.println("수정 전");
-        animal.toString();
-        Animal aaa = controller.getDisease(animal, disease);
-        System.out.println("수정 후");
-        System.out.println(aaa.getChargeAmount());
+        System.out.println("수정 전 충전금액: " + animal.getChargeAmount());
+        Animal updatedAnimal = controller.getDisease(animal, disease);
+        System.out.println("수정 후 충전금액: " + updatedAnimal.getChargeAmount());
 
         System.out.println("===============================================");
         System.out.println("     환자 진료기록 및 동물 정보를 삭제하고 있습니다...     ");
@@ -105,86 +97,81 @@ public class StartView {
         System.out.println("===============================================");
         System.out.println("            작업이 완료되었습니다. 감사합니다!             ");
         System.out.println("===============================================");
+        sc.close();
     }
-    
-	/** Disease 정보 생성*/
-	public static ArrayList<Disease> makeDiseaseList(){
-		Disease d1 = new Disease(1,"leg", 20000);
-		Disease d2 = new Disease(2,"Eye", 65000);
-		Disease d3 = new Disease(3,"Heart", 70000);
-		Disease d4 = new Disease(4,"Head", 60000);
-		Disease d5 = new Disease(5,"Skin", 20000);
-		Disease d6 = new Disease(6,"Ear", 25000);
-		
-		ArrayList<Disease> diseaseList = new ArrayList<>();
-		diseaseList.add(d1);
-		diseaseList.add(d2);
-		diseaseList.add(d3);
-		diseaseList.add(d4);
-		diseaseList.add(d5);
-		diseaseList.add(d6);
-		
-		return diseaseList;
-	}
-	
-	
-	/**animalData.txt 파일에서 데이터들을 읽어들여 데이터 생성.*/
 
-	 public static ArrayList<Animal> readAnimalDataFromFile(String filePath) {
-	        ArrayList<Animal> animalList = new ArrayList<>();
+    /** Disease 정보 생성 */
+    public static ArrayList<Disease> makeDiseaseList() {
+        Disease d1 = new Disease(1, "leg", 20000);
+        Disease d2 = new Disease(2, "Eye", 65000);
+        Disease d3 = new Disease(3, "Heart", 70000);
+        Disease d4 = new Disease(4, "Head", 60000);
+        Disease d5 = new Disease(5, "Skin", 20000);
+        Disease d6 = new Disease(6, "Ear", 25000);
 
-	        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-	            String line;
-	            while ((line = br.readLine()) != null) {
-	                String[] data = line.split(" ");
-	                
-	                Integer pk = Integer.parseInt(data[0]);
-	                String name = data[1];
-	                String guardianName = data[2];
-	                String animalType = data[3];
-	                int charge = Integer.parseInt(data[4]);
-	                String sex = data[5];
-	                
-	                /** 동물 정보 - pk, 동물이름, 보호자명, 동물종류, 충전금액, 성별*/
-	                Animal animal = new Animal(pk, name, guardianName, animalType, charge, sex);
-	                animalList.add(animal);
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+        ArrayList<Disease> diseaseList = new ArrayList<>();
+        diseaseList.add(d1);
+        diseaseList.add(d2);
+        diseaseList.add(d3);
+        diseaseList.add(d4);
+        diseaseList.add(d5);
+        diseaseList.add(d6);
 
-	        return animalList;
-	    }
-	 
-	 
-	 /**medicalRecod.txt 파일에서 데이터를 읽어들여 데이터 생성.*/
-	 public static ArrayList<MedicalRecord> readMedicalRecordFromFile(String filePath, ArrayList<Disease> diseaseList) {
-	        ArrayList<MedicalRecord> medicalRecordList = new ArrayList<>();
-	        Random random = new Random();
-	        
-	        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-	            String line;
-	            while ((line = br.readLine()) != null) {
-	                String[] data = line.split(" ");
-	                
-	                int pk = Integer.parseInt(data[0]);
-	                Disease disease = diseaseList.get(random.nextInt(6));
-	                int animalPK = Integer.parseInt(data[1]);
-	                String updateDate = data[2];
-	                int totalFee = Integer.parseInt(data[3]);
-	                String doctorName = data[4];
-	                
-	                /** 동물 정보 - pk, 동물이름, 보호자명, 동물종류, 충전금액, 성별*/
-	                MedicalRecord medicalRecord = new MedicalRecord(pk, disease, animalPK, updateDate, totalFee,doctorName);
-	                medicalRecordList.add(medicalRecord);
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+        return diseaseList;
+    }
 
-	        return medicalRecordList;
-	    }
-	 
-	
+    /** animalData.txt 파일에서 데이터들을 읽어들여 데이터 생성 */
+    public static ArrayList<Animal> readAnimalDataFromFile(String filePath) {
+        ArrayList<Animal> animalList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(" ");
+
+                Integer pk = Integer.parseInt(data[0]);
+                String name = data[1];
+                String guardianName = data[2];
+                String animalType = data[3];
+                int charge = Integer.parseInt(data[4]);
+                String sex = data[5];
+
+                /** 동물 정보 - pk, 동물이름, 보호자명, 동물종류, 충전금액, 성별 */
+                Animal animal = new Animal(pk, name, guardianName, animalType, charge, sex);
+                animalList.add(animal);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return animalList;
+    }
+
+    /** medicalRecord.txt 파일에서 데이터를 읽어들여 데이터 생성 */
+    public static ArrayList<MedicalRecord> readMedicalRecordFromFile(String filePath, ArrayList<Disease> diseaseList) {
+        ArrayList<MedicalRecord> medicalRecordList = new ArrayList<>();
+        Random random = new Random();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(" ");
+
+                int pk = Integer.parseInt(data[0]);
+                Disease disease = diseaseList.get(random.nextInt(diseaseList.size()));
+                int animalPK = Integer.parseInt(data[1]);
+                String updateDate = data[2];
+                int totalFee = Integer.parseInt(data[3]);
+                String doctorName = data[4];
+
+                /** 진료기록 정보 - pk, 질병, 동물PK, 갱신일, 총비용, 의사명 */
+                MedicalRecord medicalRecord = new MedicalRecord(pk, disease, animalPK, updateDate, totalFee, doctorName);
+                medicalRecordList.add(medicalRecord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return medicalRecordList;
+    }
 }
-
