@@ -10,9 +10,16 @@ public class PetChargerService {
 
 	// singleton design pattern
 	private static PetChargerService instance = new PetChargerService();
-
+	
+	private MedicalRecordService() {}
+	
+	public static MedicalRecordService getInstance() {
+			return instance;
+	}
+	
 	/** 조회한 진료기록을 저장 */
 	private ArrayList<MedicalRecord> medicalRecordList = new ArrayList<MedicalRecord>();
+
 
 	/** 조회한 동물 정보를 저장 */
 	private ArrayList<Animal> animalList = new ArrayList<Animal>();
