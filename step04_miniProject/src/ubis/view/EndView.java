@@ -1,9 +1,10 @@
 
 package ubis.view;
 
+
 import java.util.ArrayList;
 
-import probono.model.dto.TalentDonationProject;
+import ubis.model.dto.Animal;
 
 public class EndView {
 	
@@ -32,7 +33,7 @@ public class EndView {
 		for(Animal animal : animals) {
 			
 			if(animal != null){
-				System.out.println("[검색한 animal : " + (index++) + "] " + project);
+				System.out.println("[검색한 animal : " + (index++) + "] " + animal);
 			}
 			
 		}

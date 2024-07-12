@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter  
 @Setter
-
 public class Animal {
 	private String pet_id;
 	

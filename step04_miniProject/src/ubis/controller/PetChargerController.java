@@ -1,5 +1,8 @@
 package ubis.controller;
 
+import ubis.model.dto.Animal;
+import ubis.view.EndView;
+import ubis.view.FailView;
 
 public class PetChargerController {
 	
