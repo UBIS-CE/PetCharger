@@ -40,7 +40,7 @@ public class MedicalRecord {
 		builder.append(animalPK);
 		builder.append(", 업데이트 날짜 : ");
 		builder.append(updateDate);
-		builder.append(", 진료비 : ");
+		builder.append(", 청구금액 : ");
 		builder.append(clinicFee);
 		builder.append(", 담당의사 : ");
 		builder.append(doctorName);
