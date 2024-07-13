@@ -23,8 +23,8 @@ public class MedicalRecord {
 	/** 업데이트 날짜 */
 	private String updateDate;
 	
-	/** 총 진료비 */
-	private int totalFee;
+	/** 청구금액 */
+	private int clinicFee;
 	
 	/** 담당의사 */
 	private String doctorName;
@@ -40,8 +40,8 @@ public class MedicalRecord {
 		builder.append(animalPK);
 		builder.append(", 업데이트 날짜 : ");
 		builder.append(updateDate);
-		builder.append(", 총 진료비 : ");
-		builder.append(totalFee);
+		builder.append(", 진료비 : ");
+		builder.append(clinicFee);
 		builder.append(", 담당의사 : ");
 		builder.append(doctorName);
 		return builder.toString();

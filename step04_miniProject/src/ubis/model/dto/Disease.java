@@ -25,7 +25,7 @@ public class Disease {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PK : ");
 		builder.append(diseasePK);
-		builder.append(", 질홤명 : ");
+		builder.append(", 질환명 : ");
 		builder.append(diseaseName);
 		builder.append(", 요금 : ");
 		builder.append(fee);

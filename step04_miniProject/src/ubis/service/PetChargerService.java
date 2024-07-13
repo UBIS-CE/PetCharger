@@ -10,7 +10,8 @@ import ubis.model.dto.MedicalRecord;
 public class PetChargerService {
 
     // Singleton design pattern
-    private static PetChargerService instance = new PetChargerService();
+	// 수정 - 웅빈
+    private static PetChargerService instance ;
 
     /** 동물 정보를 저장하는 리스트 */
     private ArrayList<Animal> animalList = new ArrayList<>();
@@ -24,6 +25,10 @@ public class PetChargerService {
     private PetChargerService() {}
 
     public static PetChargerService getInstance() {
+    	// 수정 부분 - 웅빈
+    	if (instance == null) {
+    		instance = new PetChargerService();
+    	}
         return instance;
     }
 
@@ -54,6 +59,41 @@ public class PetChargerService {
         medicalRecordList.add(medicalRecord);
         System.out.println("진료기록 등록이 완료되었습니다.");
     }
+    
+    // 추가 부분 - 웅빈
+    public MedicalRecord medicalRecordInsert2(int mRPK, String diseaseName, int petPK,String updateDate , String doctorName ) throws Exception {
+    	MedicalRecord m = getMedicalRecord(mRPK);
+    	if (m != null) {
+    		throw new Exception("해당 진료기록 ID는 이미 존재합니다. 재 확인하세요.");
+    	}
+    	
+    	Animal a = getAnimalInfo(petPK);
+    	if (a == null) {
+    		throw new Exception("등록되지 않은 동물입니다.");
+    	}
+    	
+    	Disease d = getDisease(diseaseName);
+    	if(d == null) {
+    		diseaseInsert(d);
+    	}
+    	
+      	
+    	
+    	m = new MedicalRecord(mRPK, d, petPK, updateDate, calculateFee(a, d),doctorName);
+    	medicalRecordList.add(m);
+    	System.out.println("진료기록 등록이 완료되었습니다.");
+    	
+    	return m;
+    }
+    
+    // 추가 부분 - 웅빈, 진료비 청구 및 충전금 정산
+    public int calculateFee(Animal animal, Disease disease) {
+    	// 충전금 - 진료비
+    	int change = animal.getChargeAmount()-disease.getFee();
+    	animal.setChargeAmount(change);
+    	if(change>0) return 0;
+    	else return change;
+    }
 
     /**
      * 질병 정보를 삽입
@@ -80,15 +120,15 @@ public class PetChargerService {
                     searchAnimals.add(animal);
                 }
             }
-
-            if (searchAnimals.size() > 1) {
-                System.out.println("다음은 검색된 동물 목록입니다: " + searchAnimals);
-                Scanner sc = new Scanner(System.in);
-                System.out.print("당신의 애완동물 PK를 입력해주세요: ");
-                Integer animalPK = sc.nextInt();
-                searchAnimals.removeIf(animal -> animal.getPetId() != animalPK);
-                sc.close();
-            }
+            	// 수정부분 - 웅빈
+//            if (searchAnimals.size() > 1) {
+//                System.out.println("다음은 검색된 동물 목록입니다: " + searchAnimals);
+//                Scanner sc = new Scanner(System.in);
+//                System.out.print("당신의 애완동물 PK를 입력해주세요: ");
+//                Integer animalPK = sc.nextInt();
+//                searchAnimals.removeIf(animal -> animal.getPetId() != animalPK);
+//                sc.close();
+//            }
 
             if (searchAnimals.isEmpty()) {
                 throw new Exception("해당 이름의 애완동물이 존재하지 않습니다.");

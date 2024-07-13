@@ -15,8 +15,14 @@ import ubis.model.dto.MedicalRecord;
 public class StartView {
 
     public static void main(String[] args) throws Exception {
-        String filepath = "C:\\teamProject\\PetCharger\\step04_miniProject\\docs\\";
-
+        String filepath = "C:\\fisa_miniproject\\PetCharger\\step04_miniProject\\docs\\";
+        
+        // 추가 부분 - 웅빈
+        // 동물PK
+        int animalPK = 31;
+        // 진료기록 PK
+        int medicalRecordPK = 101;
+        
         // 초기 Animal들의 정보가 저장돼있는 ArrayList
         ArrayList<Animal> animalList = readAnimalDataFromFile(filepath + "animal.txt");
         ArrayList<Disease> diseaseList = makeDiseaseList();
@@ -38,66 +44,202 @@ public class StartView {
         System.out.println("     UBIS 동물병원에 오신 것을 환영합니다!     ");
         System.out.println("===============================================");
         System.out.println("처음 방문하셨나요?");
-        System.out.println("1. 처음 방문");
-        System.out.println("2. 이전에 방문한 적이 있음");
 
+//        
+//        System.out.println("===============================================");
+//        System.out.println("1. 리셉션");
+//        System.out.println("2. 수의사");
+//        
+//        System.out.println("===============================================");
+//
+//        int num = sc.nextInt();
         Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
+        boolean auto = true;
+        while(auto) {
+            System.out.println("===============================================");
+            System.out.println("1. 리셉션");
+            System.out.println("2. 수의사");
+            
+            System.out.println("===============================================");
+           
+            int num = sc.nextInt();
+        	switch(num) {
+        	
+            case 1:
+            	System.out.println("----------------------------------");
+            	System.out.println("1. 조회 - 초진 X");
+                System.out.println("2. 초진");
+                System.out.println("----------------------------------");
+                int num1 = sc.nextInt();
+             // 처음 방문
+                if(num1 == 1) {
+                	System.out.println("조회하려는 동물의 이름을 입력해주세요.");
+                	String petName = sc.next();
+                	controller.getAnimalList(petName);
+                	
+                	System.out.println("동물ID를 입력해주세요.");
+                	int petId = sc.nextInt();
+                	controller.getAnimalInfo(petId);
+                	
+                	System.out.println("진료기록을 보시겠습니까?");
+                	System.out.println("1. 예  2. 아니오");
+                	int choice = sc.nextInt();
+                	if(choice == 1) {
+                		controller.getMedicalRecordList(petId);
+                	}
+                	else if (choice == 2) {
+                		break;
+                	}
+                	break;
+                		
+                }
+                else if (num1 == 2) {
+                	System.out.println("---------------------------------------");
+                	System.out.println("              손님 정보 입력                ");
+                	System.out.println("---------------------------------------");
+                	System.out.println("반려동물 이름.");
+                	String petName = sc.next();
+                	
+                	System.out.println("보호자 성함.");
+                	String ownerName = sc.next();
+                	
+                	System.out.println("동물 종");
+                	String animalType = sc.next();
+                	
+                	System.out.println("충전 금액");
+                	int charge = sc.nextInt();
+                	
+                	System.out.println("반려동물 성별 (F/M)");
+                	String gender = sc.next();
+                	
+                	animalPK++;
+                	
+                    Animal an = new Animal(animalPK, petName,ownerName,animalType, charge, gender);
+                    controller.animalInsert(an);
+                    System.out.println("새로운 동물이 등록되었습니다: " + an);
+                    break;
+                }
+                // 이전에 방문한 적이 있음
+                
+                else {
+                    System.out.println("잘못된 입력입니다. 프로그램을 재실행 해주세요.");
+                    return;
+                }
+                
+            
+            // 수의사 부분
+            case 2:
+            	System.out.println("1. 진료          2. 환자정보 삭제");
+            	int num2 = sc.nextInt();
+            	if(num2==1) {
+            		System.out.println("===========================================");
+                	System.out.println("진료하시는 동물의 이름을 입력해주세요");
+                    String petName = sc.next();
+                    controller.getAnimalList(petName);
+                    
+                    System.out.println("해당하는 동물 PK를 입력해주세요");
+                    int petId = sc.nextInt();
+                    
+                    System.out.println("===============================================");
+                    System.out.println("          진료기록 조회 결과입니다.          ");
+                    System.out.println("===============================================");
+                    controller.getMedicalRecordList(petId);
+                    
+                    
+                    System.out.println("===============================================");
+                    System.out.println("                진료 중입니다...                ");
+                    System.out.println("===============================================");
+                    System.out.println("질병명을 입력해주세요:");
+                    String diseaseName = sc.next();
 
-        // 처음 방문
-        if (num == 1) {
-            Animal an = new Animal(100, "웅이", "박웅빈", "HEDGEHOG", 200000, "M");
-            controller.animalInsert(an);
-            System.out.println("새로운 동물이 등록되었습니다: " + an);
-        }
-        // 이전에 방문한 적이 있음
-        else if (num == 2) {
-            System.out.println("반갑습니다! 보호자 이름을 입력해주세요:");
-            String ownerName = sc.next();
-            controller.getAnimalList(ownerName);
-        } else {
-            System.out.println("잘못된 입력입니다. 프로그램을 재실행 해주세요.");
-            return;
-        }
+                    
+                    
+                    System.out.println("===============================================");
+                    System.out.println("        환자 진료기록을 생성하고 있습니다...        ");
+                    System.out.println("===============================================");
+                    
+                    //TODO 동물 진료기록 Update  --> 새로운 medicalRecord Insert
+                    medicalRecordPK++;
+                    // updateDate, DoctorName 임시 설정
+                    String updateDate = "20240713";
+                    String doctorName = "김사부";
+                    
+                    
+                    controller.medicalRecordInsert2(medicalRecordPK, diseaseName, petId, updateDate, doctorName);
+                    break;
+            	}
+            	else if (num2==2) {
+            		System.out.println("===========================================");
+                	System.out.println("삭제하시려는 환자정보의 동물 이름을 입력해주세요");
+                    String petName = sc.next();
+                    controller.getAnimalList(petName);
+                    
+                    System.out.println("해당하는 동물 PK를 입력해주세요");
+                    int petId = sc.nextInt();
+                    
+                    
+                    System.out.println("===============================================");
+                    System.out.println("     환자 진료기록 및 동물 정보를 삭제하고 있습니다...     ");
+                    System.out.println("===============================================");
+                    controller.animalAndMedicalRecordDelete(petId);
+                    break;
+            	}
+            default:
+    	        System.out.println("===============================================");
+    	        System.out.println("            작업이 완료되었습니다. 감사합니다!             ");
+    	        System.out.println("===============================================");
+    	        auto = false;
+            }
+        }sc.close();
+        
 
-        System.out.println("===============================================");
-        System.out.println("                진료 중입니다...                ");
-        System.out.println("===============================================");
-        System.out.println("질병명을 입력해주세요:");
-        String diseaseName = sc.next();
+//        System.out.println("===============================================");
+//        System.out.println("                진료 중입니다...                ");
+//        System.out.println("===============================================");
+//        System.out.println("질병명을 입력해주세요:");
+//        String diseaseName = sc.next();
+//
+//        System.out.println("===============================================");
+//        System.out.println("        환자 진료기록을 생성하고 있습니다...        ");
+//        System.out.println("===============================================");
+//        System.out.println("애완동물 이름을 입력해주세요:");
+//        String name = sc.next();
+//        // 수정 부분 - 웅빈
+//        // ArrayList<Animal> AnimalArrayList = controller.getAnimalList(name);
+//        controller.getAnimalList(name);
+//        
+//        System.out.println("해당하는 동물 PK를 입력해주세요");
+//        int petId = sc.nextInt();
+//        
+//
+//        
+//        System.out.println("===============================================");
+//        System.out.println("          진료기록 조회 결과입니다.          ");
+//        System.out.println("===============================================");
+//        // 수정 부분 - 웅빈
+//        // controller.getMedicalRecordList(AnimalArrayList.get(0).getPetId());
+//        controller.getMedicalRecordList(petId);
+//
+//        System.out.println("===============================================");
+//        System.out.println("        병명 및 가격 정보를 생성하고 있습니다...        ");
+//        System.out.println("===============================================");
+//        System.out.println("병명을 입력해주세요:");
+//        String disease = sc.next();
+//        // 수정 부분 - 웅빈
+//        // controller.getAnimalInfo(petId);
+////        Animal animal = controller.getAnimalInfo(AnimalArrayList.get(0).getPetId());
+//       
+//        // 금액 조회 기능과 금액 수정 기능이 필요함 - 웅빈
+//        System.out.println("수정 전 충전금액: " + controller.getDisease2(null, diseaseName)
+//        Animal updatedAnimal = controller.getDisease(animal, disease);
+//        System.out.println("수정 후 충전금액: " + updatedAnimal.getChargeAmount());
+        
+//        System.out.println("===============================================");
+//        System.out.println("     환자 진료기록 및 동물 정보를 삭제하고 있습니다...     ");
+//        System.out.println("===============================================");
+//        controller.animalAndMedicalRecordDelete(animal.getPetId());
 
-        System.out.println("===============================================");
-        System.out.println("        환자 진료기록을 생성하고 있습니다...        ");
-        System.out.println("===============================================");
-        System.out.println("애완동물 이름을 입력해주세요:");
-        String name = sc.next();
-        ArrayList<Animal> AnimalArrayList = controller.getAnimalList(name);
-
-        System.out.println("===============================================");
-        System.out.println("          진료기록 조회 결과입니다.          ");
-        System.out.println("===============================================");
-        controller.getMedicalRecordList(AnimalArrayList.get(0).getPetId());
-
-        System.out.println("===============================================");
-        System.out.println("        병명 및 가격 정보를 생성하고 있습니다...        ");
-        System.out.println("===============================================");
-        System.out.println("병명을 입력해주세요:");
-        String disease = sc.next();
-
-        Animal animal = controller.getAnimalInfo(AnimalArrayList.get(0).getPetId());
-        System.out.println("수정 전 충전금액: " + animal.getChargeAmount());
-        Animal updatedAnimal = controller.getDisease(animal, disease);
-        System.out.println("수정 후 충전금액: " + updatedAnimal.getChargeAmount());
-
-        System.out.println("===============================================");
-        System.out.println("     환자 진료기록 및 동물 정보를 삭제하고 있습니다...     ");
-        System.out.println("===============================================");
-        controller.animalAndMedicalRecordDelete(animal.getPetId());
-
-        System.out.println("===============================================");
-        System.out.println("            작업이 완료되었습니다. 감사합니다!             ");
-        System.out.println("===============================================");
-        sc.close();
+        
     }
 
     /** Disease 정보 생성 */
@@ -140,10 +282,11 @@ public class StartView {
                 Animal animal = new Animal(pk, name, guardianName, animalType, charge, sex);
                 animalList.add(animal);
             }
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
         return animalList;
     }
 
@@ -168,6 +311,7 @@ public class StartView {
                 MedicalRecord medicalRecord = new MedicalRecord(pk, disease, animalPK, updateDate, totalFee, doctorName);
                 medicalRecordList.add(medicalRecord);
             }
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

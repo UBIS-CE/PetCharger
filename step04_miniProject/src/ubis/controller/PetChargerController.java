@@ -1,6 +1,6 @@
 package ubis.controller;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import ubis.model.dto.Animal;
 import ubis.model.dto.Disease;
@@ -11,12 +11,16 @@ import ubis.view.FailView;
 
 public class PetChargerController {
 
-    private static PetChargerController instance = new PetChargerController();
+    private static PetChargerController instance;
     private static PetChargerService service = PetChargerService.getInstance();
 
     private PetChargerController() {}
-
+    
+    // 수정 부분 - 웅빈 if문으로 객체가 이미 있다면 생성x
     public static PetChargerController getInstance() {
+    	if(instance == null) {
+    		instance = new PetChargerController();
+    	}
         return instance;
     }
 
@@ -57,9 +61,11 @@ public class PetChargerController {
      * 이름 검색 후 리스트 반환-> 선택하여 확인
      * SELECT
      */
-    public ArrayList<Animal> getAnimalList(String petName) throws Exception {
-        EndView.animalViewList(service.getAnimalList(petName));
-        return service.getAnimalList(petName);
+    // 수정 부분 - 웅빈
+    public void getAnimalList(String petName) throws Exception {
+        //EndView.animalViewList(service.getAnimalList(petName));
+        //return service.getAnimalList(petName);
+    	EndView.animalViewList2(service.getAnimalList(petName));
     }
 
     /**
@@ -89,7 +95,8 @@ public class PetChargerController {
      */
     public void getMedicalRecordList(int animalPK) {
         try {
-            EndView.medicalRecordViewList(service.getMedicalRecordList(animalPK));
+        	// 수정 부분 - 웅빈 함수 1 -> 2 로 변경
+            EndView.medicalRecordViewList2(service.getMedicalRecordList(animalPK));
         } catch (Exception e) {
             FailView.failViewMessage("진료 기록 조회 실패: " + e.getMessage());
             e.printStackTrace();
@@ -113,11 +120,26 @@ public class PetChargerController {
         Animal updatedAnimal = service.calculateTotalFee(animal, disease.getFee());
         return updatedAnimal;
     }
-
+//    // 수정부분 - 웅빈 & 요금 조회 및 정산
+//    public void getDisease2(Animal animal, String diseaseName) {
+//    	EndView.getDiseaseInfo(service.getDisease(diseaseName));
+//    	Animal updatedAnimal = service.calculateTotalFee(animal, disease.getFee());
+//    }
+//    
+    
+ 
     /**
      * 8. 동물 정보 조회
      */
-    public Animal getAnimalInfo(int petID) {
-        return service.getAnimalInfo(petID);
+    // 수정 부분 - 웅빈
+    public void getAnimalInfo(int petID) {
+        EndView.animalInfo(service.getAnimalInfo(petID));
     }
+    // 추가 부분 - 웅빈 , 진료기록 추가
+    public void medicalRecordInsert2(int mRPK, String diseaseName, int petPK,String updateDate , String doctorName ) throws Exception {
+    	EndView.medicalRecordInsert(service.medicalRecordInsert2(mRPK, diseaseName, petPK,updateDate, doctorName));
+    	
+    	// 총 진료비에서 이번 진료비를 빼자!
+    }
+    // service에서 질병에 따른 가격을 불러오고 그 후 service에서 medicalrecord insert
 }
